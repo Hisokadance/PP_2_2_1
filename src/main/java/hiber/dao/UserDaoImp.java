@@ -16,16 +16,18 @@ public class UserDaoImp implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+    //todo: вводим Transaction аннотацией
+
     @Override
     public void add(User user, Car car) {
-        sessionFactory.getCurrentSession().save(user);
+        sessionFactory.getCurrentSession().save(user);//todo: нет, так не делается. Необходимо на моделях создать связь и сделать сохраниение user with car одиним методом
         sessionFactory.getCurrentSession().save(car);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
+        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");//todo: Session - в try_catch_with_resources (везде)
         return query.getResultList();
     }
 

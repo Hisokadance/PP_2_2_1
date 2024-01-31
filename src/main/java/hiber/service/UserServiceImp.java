@@ -15,11 +15,11 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserDao userDao;
 
-    @Transactional
+    @Transactional//todo: выносим над классом типовую аннотацию, как обобщение
     @Override
     public void add(User user, Car car) {
         userDao.add(user,car);
-    }
+    }//todo: не забываем про log-и (иммитацию)
 
     @Transactional(readOnly = true)
     @Override

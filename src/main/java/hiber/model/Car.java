@@ -12,14 +12,18 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "car")
 public class Car {
+    //todo: codeStyle ..небрежно, не читаемо
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private int car_id;
+
     @Column(name = "model")
     private String model;
+
     @Column(name = "series")
     private int series;
+
     @OneToOne
     @JoinColumn(name = "car_id")
     private User user;
