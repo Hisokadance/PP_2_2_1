@@ -18,7 +18,7 @@ public class UserDaoImp implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
+    @Transactional//todo: как обощение - выносится над классом (здесь @Transactional после этого не проставляется)
     public void add(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.save(user);

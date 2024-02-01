@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional
 public class UserServiceImp implements UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);//todo: ..кажется, логгер не работает - в консоли нет логгирования
 
     @Autowired
     private UserDao userDao;
