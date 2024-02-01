@@ -1,10 +1,11 @@
 package hiber.dao;
 
-import hiber.model.Car;
 import hiber.model.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
@@ -16,32 +17,35 @@ public class UserDaoImp implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    //todo: вводим Transaction аннотацией
-
     @Override
-    public void add(User user, Car car) {
-        sessionFactory.getCurrentSession().save(user);//todo: нет, так не делается. Необходимо на моделях создать связь и сделать сохраниение user with car одиним методом
-        sessionFactory.getCurrentSession().save(car);
+    @Transactional
+    public void add(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.save(user);
+        }
     }
 
     @Override
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");//todo: Session - в try_catch_with_resources (везде)
-        return query.getResultList();
+        try (Session session = sessionFactory.openSession()) {
+            TypedQuery<User> query = session.createQuery("from User", User.class);
+            return query.getResultList();
+        }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getUserByCar(String model, int series) {
-        TypedQuery<User> query = sessionFactory.getCurrentSession()
-                .createQuery("FROM User WHERE car.model =: model AND car.series =:series", User.class);
-        query.setParameter("model", model);
-        query.setParameter("series", series);
-        List<User> users = query.getResultList();
-        if (users.isEmpty()) {
-            throw new EntityNotFoundException("у User нет машины");
+        try (Session session = sessionFactory.openSession()) {
+            TypedQuery<User> query = session.createQuery("FROM User WHERE car.model =: model AND car.series =:series", User.class);
+            query.setParameter("model", model).setParameter("series", series);
+            List<User> users = query.getResultList();
+            if (users.isEmpty()) {
+                throw new EntityNotFoundException("У пользователя нет машины с моделью " + model + " и серией " + series);
+            }
+            return users;
         }
-        return query.getResultList();
     }
-
 }

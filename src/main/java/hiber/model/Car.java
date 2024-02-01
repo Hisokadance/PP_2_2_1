@@ -1,5 +1,6 @@
 package hiber.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,12 +11,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 public class Car {
-    //todo: codeStyle ..небрежно, не читаемо
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "car_id")
     private int car_id;
 
     @Column(name = "model")
@@ -24,7 +24,7 @@ public class Car {
     @Column(name = "series")
     private int series;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private User user;
 
@@ -62,10 +62,6 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
-               "car_id=" + car_id +
-               ", model='" + model + '\'' +
-               ", series=" + series +
-               '}';
+        return "Car{" + "car_id=" + car_id + ", model='" + model + '\'' + ", series=" + series + '}';
     }
 }
