@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -74,5 +73,10 @@ public class User {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", car=" + car + '}';
     }
 }

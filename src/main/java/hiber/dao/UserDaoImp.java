@@ -12,13 +12,13 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImp implements UserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional//todo: как обощение - выносится над классом (здесь @Transactional после этого не проставляется)
     public void add(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.save(user);
@@ -27,7 +27,6 @@ public class UserDaoImp implements UserDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
     public List<User> listUsers() {
         try (Session session = sessionFactory.openSession()) {
             TypedQuery<User> query = session.createQuery("from User", User.class);
@@ -36,7 +35,6 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> getUserByCar(String model, int series) {
         try (Session session = sessionFactory.openSession()) {
             TypedQuery<User> query = session.createQuery("FROM User WHERE car.model =: model AND car.series =:series", User.class);

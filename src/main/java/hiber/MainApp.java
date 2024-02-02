@@ -4,13 +4,12 @@ import hiber.config.AppConfig;
 import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
-import org.springframework.beans.BeansException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
 
 public class MainApp {
-    public static void main(String[] args) {//todo: throws BeansException ...не нужно добавлять вещи, смысл которых не понятен
+    public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
         UserService userService = context.getBean(UserService.class);
@@ -37,10 +36,7 @@ public class MainApp {
         user4.setCar(car4);
         userService.add(user4, car4);
 
-        //Вывод счасливого обладеля машины
         List<User> users = userService.getUserByCar("Toyota", 123);
-        //Вывод всех пользователь с машиинами
-//        List<User> users = userService.listUsers();//todo: codeStyle - код не оставляем в комментариях
         for (User user : users) {
             System.out.println("Id = " + user.getId());
             System.out.println("First Name = " + user.getFirstName());
